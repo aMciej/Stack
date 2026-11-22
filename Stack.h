@@ -4,14 +4,14 @@
 
 struct Node{
     int Value;
-    Node* Next;
+    std::unique_ptr<Node> Next;
 
-    Node(int Value, Node* Next);
+    Node(int Value, std::unique_ptr<Node> Next);
 
 };
 
 class Stack{
-    Node* Head;
+    std::unique_ptr<Node> Head;
 
     public:
     Stack();

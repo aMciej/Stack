@@ -2,27 +2,25 @@
 #include <memory>
 #include "Stack.h"
 
-Node::Node(int Value, Node* Next){
-    Value = Value;
-    Next = Next;
-}
+Node::Node(int Value, std::unique_ptr<Node> Next)
+    : Value(Value), Next(std::move(Next)){
+    }
+
 
 Stack::Stack(){
     Head = nullptr;
 }
 
 void Stack::push(int value){
-    Node *newNode = new Node(value, Head);
-    Head = newNode;
+    auto newNode = std::make_unique<Node>(value, std::move(Head));
+    Head = std::move(newNode);
 }
 
 void Stack::pop(){
     if (Head == nullptr){
         std::cout << "Stack is empty" << std::endl;
     }else{
-        Node* temp = Head;
-        Head = Head->Next;
-        delete temp;
+        Head = std::move(Head->Next);
     }
 }
 
@@ -43,16 +41,11 @@ void Stack::isEmpty(){
 }
 
 int Stack::size(){
-    if(Head == nullptr){
-        std::cout << "Stack size: 0" << std::endl;
-        return 0;
-    }else{
         int count = 0;
-        Node *temp = Head;
+        Node* temp = Head.get();
         while(temp != nullptr){
-            temp = temp->Next;
             count +=1;
+            temp = temp->Next.get();
         }
         return count;
-    }
 }

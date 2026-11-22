@@ -3,11 +3,13 @@
 using namespace std;
 
 int main() {
-    Stack *s1 = new Stack();
+    auto s1 = std::make_unique<Stack>();
     s1->push(1);
     s1->push(2);
     s1->pop();
     s1->top();
     s1->isEmpty();
-    s1->size();
+    std::cout << s1->size() << std::endl;
+
+    return 0;
 }
